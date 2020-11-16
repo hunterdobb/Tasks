@@ -27,9 +27,9 @@ struct ProjectsView: View {
                 
                 // 'projects.wrappedValue' gives the items from the fetch request, not the fetch request struct around it
                 ForEach(projects.wrappedValue) { project in
-                    Section(header: Text(project.title ?? "")) {
-                        ForEach(project.items?.allObjects as? [Item] ?? []) { item in
-                            Text(item.title ?? "")
+                    Section(header: Text(project.projectTitle)) {
+                        ForEach(project.projectItems) { item in
+                            Text(item.itemTitle)
                         }
                     }
                 }
