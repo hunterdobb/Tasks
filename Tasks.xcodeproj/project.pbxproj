@@ -20,6 +20,9 @@
 		B56A9EA52561D21200D30F27 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A9EA42561D21200D30F27 /* CloudKit.framework */; };
 		B56A9EA82561D38000D30F27 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A9EA72561D38000D30F27 /* HomeView.swift */; };
 		B56A9EAB2561D46A00D30F27 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A9EAA2561D46A00D30F27 /* ProjectsView.swift */; };
+		B5A97F1E2568A11D0055B9DA /* Binding-OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A97F1D2568A11D0055B9DA /* Binding-OnChange.swift */; };
+		B5A97F212568A54C0055B9DA /* ProjectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A97F202568A54C0055B9DA /* ProjectHeaderView.swift */; };
+		B5A97F252568A9990055B9DA /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5A97F242568A9990055B9DA /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		B56A9EA42561D21200D30F27 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B56A9EA72561D38000D30F27 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B56A9EAA2561D46A00D30F27 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
+		B5A97F1D2568A11D0055B9DA /* Binding-OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-OnChange.swift"; sourceTree = "<group>"; };
+		B5A97F202568A54C0055B9DA /* ProjectHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderView.swift; sourceTree = "<group>"; };
+		B5A97F242568A9990055B9DA /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +88,10 @@
 				B50A59612562003E002C9118 /* Projects-CoreDataHelpers.swift */,
 				B56A9E8C2561BBE500D30F27 /* ContentView.swift */,
 				B535ACC725635046006D9583 /* EditItemView.swift */,
+				B5A97F202568A54C0055B9DA /* ProjectHeaderView.swift */,
+				B5A97F1D2568A11D0055B9DA /* Binding-OnChange.swift */,
 				B56A9E8E2561BBE500D30F27 /* Assets.xcassets */,
+				B5A97F242568A9990055B9DA /* Colors.xcassets */,
 				B56A9E932561BBE500D30F27 /* Info.plist */,
 				B56A9E902561BBE500D30F27 /* Preview Content */,
 				B56A9E9A2561BCA700D30F27 /* Main.xcdatamodeld */,
@@ -164,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A97F252568A9990055B9DA /* Colors.xcassets in Resources */,
 				B56A9E922561BBE500D30F27 /* Preview Assets.xcassets in Resources */,
 				B56A9E8F2561BBE500D30F27 /* Assets.xcassets in Resources */,
 			);
@@ -177,11 +187,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56A9EAB2561D46A00D30F27 /* ProjectsView.swift in Sources */,
+				B5A97F212568A54C0055B9DA /* ProjectHeaderView.swift in Sources */,
 				B56A9E9C2561BCA700D30F27 /* Main.xcdatamodeld in Sources */,
 				B56A9E9F2561BFF000D30F27 /* DataController.swift in Sources */,
 				B56A9E8D2561BBE500D30F27 /* ContentView.swift in Sources */,
 				B535ACCB256356B9006D9583 /* ItemRowView.swift in Sources */,
 				B56A9EA82561D38000D30F27 /* HomeView.swift in Sources */,
+				B5A97F1E2568A11D0055B9DA /* Binding-OnChange.swift in Sources */,
 				B56A9E8B2561BBE500D30F27 /* TasksApp.swift in Sources */,
 				B50A59622562003E002C9118 /* Projects-CoreDataHelpers.swift in Sources */,
 				B50A595F2561FEBC002C9118 /* Item-CoreDataHelpers.swift in Sources */,
