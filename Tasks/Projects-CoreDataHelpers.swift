@@ -8,8 +8,10 @@
 import Foundation
 
 extension Project {
+    static let colors = ["Pink", "Purple", "Red", "Orange", "Gold", "Green", "Teal", "Light Blue", "Dark Blue", "Midnight", "Dark Gray", "Gray"]
+    
     var projectTitle: String {
-        title ?? "New Project"
+        title ?? NSLocalizedString("New Project", comment: "Create a new project")
     }
     
     var projectDetail: String {
@@ -21,27 +23,25 @@ extension Project {
     }
     
     var projectItems: [Item] {
-        let itemsArray = items?.allObjects as? [Item] ?? []
-        
-        return itemsArray.sorted { first, second in
+        items?.allObjects as? [Item] ?? []
+    }
+    
+    var projectItemsDefaultSorted: [Item] {
+        projectItems.sorted { first, second in
             if first.completed == false {
                 if second.completed == true {
-                    // first should come before second
-                    return true
+                    return true // first should come before second
                 }
             } else if first.completed == true {
                 if second.completed == false {
-                    // second should come before first
-                    return false
+                    return false // second should come before first
                 }
             }
             
             if first.priority > second.priority {
-                // first comes first
-                return true
+                return true // first comes first
             } else if first.priority < second.priority {
-                // second comes first
-                return false
+                return false // second comes first
             }
             
             return first.itemCreationDate < second.itemCreationDate
@@ -67,5 +67,16 @@ extension Project {
         project.creationDate = Date()
         
         return project
+    }
+    
+    func projectItems(using sortOrder: Item.SortOrder) -> [Item] {
+        switch sortOrder {
+        case .title:
+            return projectItems.sorted { $0.itemTitle < $1.itemTitle }
+        case .creationDate:
+            return projectItems.sorted { $0.itemCreationDate < $1.itemCreationDate }
+        case .optimized:
+            return projectItemsDefaultSorted
+        }
     }
 }
