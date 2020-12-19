@@ -19,6 +19,9 @@
 		B53C4859258977460073F062 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B53C485B258977460073F062 /* Localizable.strings */; };
 		B53C485E258978150073F062 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B53C4860258978150073F062 /* Localizable.stringsdict */; };
 		B53C4864258979CA0073F062 /* Awards.json in Resources */ = {isa = PBXBuildFile; fileRef = B53C4866258979CA0073F062 /* Awards.json */; };
+		B55363F4258A833600792DE6 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F3258A833600792DE6 /* ItemListView.swift */; };
+		B55363F8258A845300792DE6 /* ProjectSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F7258A845300792DE6 /* ProjectSummaryView.swift */; };
+		B55363FC258A919A00792DE6 /* ItemDetailRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363FB258A919A00792DE6 /* ItemDetailRowView.swift */; };
 		B56A9E8B2561BBE500D30F27 /* TasksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A9E8A2561BBE500D30F27 /* TasksApp.swift */; };
 		B56A9E8D2561BBE500D30F27 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A9E8C2561BBE500D30F27 /* ContentView.swift */; };
 		B56A9E8F2561BBE500D30F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56A9E8E2561BBE500D30F27 /* Assets.xcassets */; };
@@ -50,6 +53,9 @@
 		B53C4862258978230073F062 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = hu; path = hu.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B53C4865258979CA0073F062 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = en; path = en.lproj/Awards.json; sourceTree = "<group>"; };
 		B53C4868258979D60073F062 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = hu; path = hu.lproj/Awards.json; sourceTree = "<group>"; };
+		B55363F3258A833600792DE6 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
+		B55363F7258A845300792DE6 /* ProjectSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryView.swift; sourceTree = "<group>"; };
+		B55363FB258A919A00792DE6 /* ItemDetailRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailRowView.swift; sourceTree = "<group>"; };
 		B56A9E872561BBE500D30F27 /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56A9E8A2561BBE500D30F27 /* TasksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksApp.swift; sourceTree = "<group>"; };
 		B56A9E8C2561BBE500D30F27 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +109,9 @@
 				B56A9EA12561D1E300D30F27 /* Tasks.entitlements */,
 				B56A9E8A2561BBE500D30F27 /* TasksApp.swift */,
 				B56A9EA72561D38000D30F27 /* HomeView.swift */,
+				B55363F7258A845300792DE6 /* ProjectSummaryView.swift */,
+				B55363F3258A833600792DE6 /* ItemListView.swift */,
+				B55363FB258A919A00792DE6 /* ItemDetailRowView.swift */,
 				B56A9EAA2561D46A00D30F27 /* ProjectsView.swift */,
 				B5137DDC25815CB80044F212 /* Bundle-Decodable.swift */,
 				B5137DD9258158B50044F212 /* SelectSomethingView.swift */,
@@ -153,6 +162,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B56A9E962561BBE500D30F27 /* Build configuration list for PBXNativeTarget "Tasks" */;
 			buildPhases = (
+				B5AF9C36258EB33E00A594E9 /* SwiftLint */,
 				B56A9E832561BBE500D30F27 /* Sources */,
 				B56A9E842561BBE500D30F27 /* Frameworks */,
 				B56A9E852561BBE500D30F27 /* Resources */,
@@ -173,7 +183,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					B56A9E862561BBE500D30F27 = {
 						CreatedOnToolsVersion = 12.2;
@@ -215,6 +225,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B5AF9C36258EB33E00A594E9 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B56A9E832561BBE500D30F27 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -225,8 +256,11 @@
 				B5A97F212568A54C0055B9DA /* ProjectHeaderView.swift in Sources */,
 				B5137DDD25815CB80044F212 /* Bundle-Decodable.swift in Sources */,
 				B56A9E9C2561BCA700D30F27 /* Main.xcdatamodeld in Sources */,
+				B55363F4258A833600792DE6 /* ItemListView.swift in Sources */,
 				B5137DDA258158B50044F212 /* SelectSomethingView.swift in Sources */,
 				B5137DE3258168020044F212 /* Award.swift in Sources */,
+				B55363F8258A845300792DE6 /* ProjectSummaryView.swift in Sources */,
+				B55363FC258A919A00792DE6 /* ItemDetailRowView.swift in Sources */,
 				B5137DE6258169600044F212 /* AwardsView.swift in Sources */,
 				B56A9E9F2561BFF000D30F27 /* DataController.swift in Sources */,
 				B5A502FD2569E58900600DCB /* EditProjectView.swift in Sources */,
@@ -278,6 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -339,6 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
