@@ -6,7 +6,9 @@
 //
 
 import CoreData
+import CoreSpotlight
 import SwiftUI
+import WidgetKit
 
 /// An environment singleton responsible for managing our Core Data stack, including handling saving,
 /// counting fetch requests, tracking awards, and dealing with sample data.
@@ -14,12 +16,29 @@ class DataController: ObservableObject {
 	/// The lone CloudKit container used to store all our data.
     let container: NSPersistentCloudKitContainer
 
+	/// The UserDefaults suite where we're saving user data
+	let defaults: UserDefaults
+
+	/// Loads and saves whether our premium unlock has been purchased
+	var fullVersionUnlocked: Bool {
+		get {
+			defaults.bool(forKey: "fullVersionUnlocked")
+		}
+
+		set {
+			defaults.set(newValue, forKey: "fullVersionUnlocked")
+		}
+	}
+
 	/// Initializes a data controller, either in memory (for temporary use such as testing and previewing),
 	/// or on permanent storage (for use in regular app runs).
 	///
 	///  Defaults to permanent storage.
 	/// - Parameter inMemory: Wether to store this data in temporary memory or not.
-    init(inMemory: Bool = false) {
+	/// - Parameter defaults: The UserDefaults suite where user data should be stored
+	init(inMemory: Bool = false, defaults: UserDefaults = .standard) {
+		self.defaults = defaults
+
 		container = NSPersistentCloudKitContainer(name: "Main", managedObjectModel: Self.model)
 
 		// For testing and previewing purposes we create a temporary,
@@ -27,12 +46,19 @@ class DataController: ObservableObject {
 		// destroyed after the app finishes running.
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
-        }
+		} else {
+			let groupID = "group.com.hunterdobbapps.tasks"
+			if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) {
+				container.persistentStoreDescriptions.first?.url = url.appendingPathComponent("Main.sqlite")
+			}
+		}
 
         container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError("Fatal error loading store: \(error.localizedDescription)")
             }
+
+			self.container.viewContext.automaticallyMergesChangesFromParent = true
 
 			#if DEBUG
 			if CommandLine.arguments.contains("enable-testing") {
@@ -99,46 +125,111 @@ class DataController: ObservableObject {
     func save() {
         if container.viewContext.hasChanges {
             try? container.viewContext.save()
+			WidgetCenter.shared.reloadAllTimelines()
         }
     }
 
-    func delete(_ object: NSManagedObject) {
+    func delete(_ object: Project) {
+		let id = object.objectID.uriRepresentation().absoluteString
+		CSSearchableIndex.default().deleteSearchableItems(withDomainIdentifiers: [id])
+
         container.viewContext.delete(object)
     }
 
+	func delete(_ object: Item) {
+		let id = object.objectID.uriRepresentation().absoluteString
+		CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [id])
+
+		container.viewContext.delete(object)
+	}
+
     func deleteAll() {
-        let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = Project.fetchRequest()
-        let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
-        _ = try? container.viewContext.execute(batchDeleteRequest1)
+        let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = Item.fetchRequest()
+		delete(fetchRequest1)
 
         let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = Project.fetchRequest()
-        let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
-        _ = try? container.viewContext.execute(batchDeleteRequest2)
+        delete(fetchRequest2)
     }
+
+	private func delete(_ fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
+		let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+		batchDeleteRequest.resultType = .resultTypeObjectIDs
+
+		if let delete = try? container.viewContext.execute(batchDeleteRequest) as? NSBatchDeleteResult {
+			let changes = [NSDeletedObjectsKey: delete.result as? [NSManagedObjectID] ?? []]
+			NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [container.viewContext])
+		}
+	}
 
     func count<T>(for fetchRequest: NSFetchRequest<T>) -> Int {
         (try? container.viewContext.count(for: fetchRequest)) ?? 0
     }
 
-    func hasEarned(award: Award) -> Bool {
-        switch award.criterion {
-        case "items":
-			// returns true if they've added a certain number of items
-            let fetchRequest: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
-            let awardCount = count(for: fetchRequest)
-            return awardCount >= award.value
+	// 16:21
 
-        case "complete":
-			// returns true if they completed a certain number of items
-            let fetchRequest: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
-            fetchRequest.predicate = NSPredicate(format: "completed = true")
-            let awardCount = count(for: fetchRequest)
-            return awardCount >= award.value
+	func update(_ item: Item) {
+		let itemID = item.objectID.uriRepresentation().absoluteString
+		let projectID = item.project?.objectID.uriRepresentation().absoluteString
 
-        default:
-			// Unknown award criterion; this should never be allowed
-//            fatalError("Unknown award criterion: \(award.criterion)")
-            return false
-        }
-    }
+		let attributeSet = CSSearchableItemAttributeSet(contentType: .text)
+		attributeSet.title = item.itemTitle
+		attributeSet.contentDescription = item.itemDetail
+
+		let searchableItem = CSSearchableItem(
+			uniqueIdentifier: itemID,
+			domainIdentifier: projectID,
+			attributeSet: attributeSet
+		)
+
+		CSSearchableIndex.default().indexSearchableItems([searchableItem])
+
+		save()
+	}
+
+	func item(with uniqueIdentifier: String) -> Item? {
+		guard let url = URL(string: uniqueIdentifier) else {
+			return nil
+		}
+
+		guard let id = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {
+			return nil
+		}
+
+		return try? container.viewContext.existingObject(with: id) as? Item
+	}
+
+	@discardableResult func addProject() -> Bool {
+		let canCreate = fullVersionUnlocked || count(for: Project.fetchRequest()) < 3
+
+		if canCreate {
+			let project = Project(context: container.viewContext)
+			project.closed = false
+			project.creationDate = Date()
+			save()
+			return true
+		} else {
+			return false
+		}
+	}
+
+	func fetchRequestForTopItems(count: Int) -> NSFetchRequest<Item> {
+		let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
+
+		let completedPredicate = NSPredicate(format: "completed = false")
+		let openPredicate = NSPredicate(format: "project.closed = false")
+		let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [completedPredicate, openPredicate])
+		itemRequest.predicate = compoundPredicate
+
+		itemRequest.sortDescriptors = [
+			NSSortDescriptor(keyPath: \Item.priority, ascending: false)
+		]
+
+		itemRequest.fetchLimit = count
+
+		return itemRequest
+	}
+
+	func results<T: NSManagedObject>(for fetchRequest: NSFetchRequest<T>) -> [T] {
+		return (try? container.viewContext.fetch(fetchRequest)) ?? []
+	}
 }

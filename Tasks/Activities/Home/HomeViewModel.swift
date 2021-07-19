@@ -15,16 +15,12 @@ extension HomeView {
 
 		@Published var projects = [Project]()
 		@Published var items = [Item]()
+		@Published var selectedItem: Item?
 
 		var dataController: DataController
 
-		var upNext: ArraySlice<Item> {
-			items.prefix(3)
-		}
-
-		var moreToExplore: ArraySlice<Item> {
-			items.dropFirst(3)
-		}
+		@Published var upNext = ArraySlice<Item>()
+		@Published var moreToExplore = ArraySlice<Item>()
 
 		init(dataController: DataController) {
 			self.dataController = dataController
@@ -42,18 +38,7 @@ extension HomeView {
 			)
 
 			// Construct a fetch request to show the 10 highest-priority, incomplete items from open projects
-			let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
-
-			let completedPredicate = NSPredicate(format: "completed = false")
-			let openPredicate = NSPredicate(format: "project.closed = false")
-			let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [completedPredicate, openPredicate])
-			itemRequest.predicate = compoundPredicate
-
-			itemRequest.sortDescriptors = [
-				NSSortDescriptor(keyPath: \Item.priority, ascending: false)
-			]
-
-			itemRequest.fetchLimit = 10
+			let itemRequest = dataController.fetchRequestForTopItems(count: 10)
 
 			itemsController = NSFetchedResultsController(
 				fetchRequest: itemRequest,
@@ -72,22 +57,29 @@ extension HomeView {
 				try itemsController.performFetch()
 				projects = projectsController.fetchedObjects ?? []
 				items = itemsController.fetchedObjects ?? []
+
+				upNext = items.prefix(3)
+				moreToExplore = items.dropFirst(3)
 			} catch {
 				print("Failed to fetch initial data.")
 			}
 		}
 
 		func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-			if let newItems = controller.fetchedObjects as? [Item] {
-				items = newItems
-			} else if let newProjects = controller.fetchedObjects as? [Project] {
-				projects = newProjects
-			}
+			items = itemsController.fetchedObjects ?? []
+			upNext = items.prefix(3)
+			moreToExplore = items.dropFirst(3)
+
+			projects = projectsController.fetchedObjects ?? []
 		}
 
 		func addSampleData() {
 			dataController.deleteAll()
 			try? dataController.createSampleData()
+		}
+
+		func selectItem(with identifier: String) {
+			selectedItem = dataController.item(with: identifier)
 		}
 	}
 }
