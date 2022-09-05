@@ -24,6 +24,10 @@ extension DataController {
 			let awardCount = count(for: fetchRequest)
 			return awardCount >= award.value
 
+        case "chat": // swiftlint:disable:this switch_case_alignment
+            // returns true if they posted a certain number of chat messages
+            return UserDefaults.standard.integer(forKey: "chatCount") >= award.value
+
 		default:
 			// Unknown award criterion; this should never be allowed
 //            fatalError("Unknown award criterion: \(award.criterion)")

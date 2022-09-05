@@ -99,13 +99,13 @@ extension Project {
         }
     }
 
-	func prepareCloudRecords() -> [CKRecord] {
+	func prepareCloudRecords(owner: String) -> [CKRecord] {
 		let parentName = objectID.uriRepresentation().absoluteString
 		let parentID = CKRecord.ID(recordName: parentName)
 		let parent = CKRecord(recordType: "Project", recordID: parentID)
 		parent["title"] = projectTitle
 		parent["detail"] = projectDetail
-		parent["owner"] = "Hunter"
+		parent["owner"] = owner
 		parent["closed"] = closed
 
 		var records = projectItemsDefaultSorted.map { item -> CKRecord in
@@ -121,5 +121,22 @@ extension Project {
 
 		records.append(parent)
 		return records
+	}
+
+	func checkCloudStatus(_ completion: @escaping (Bool) -> Void) {
+		let name = objectID.uriRepresentation().absoluteString
+		let id = CKRecord.ID(recordName: name)
+		let operation = CKFetchRecordsOperation(recordIDs: [id])
+		operation.desiredKeys = ["recordID"]
+
+		operation.fetchRecordsCompletionBlock = { records, _ in
+			if let records = records {
+				completion(records.count == 1)
+			} else {
+				completion(false)
+			}
+		}
+
+		CKContainer.default().publicCloudDatabase.add(operation)
 	}
 }
