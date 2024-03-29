@@ -40,6 +40,9 @@ struct SharedProjectsView: View {
 			.navigationTitle("Shared Projects")
 		}
 		.onAppear(perform: fetchSharedProjects)
+		.refreshable {
+			fetchSharedProjects()
+		}
 	}
 
 	func fetchSharedProjects() {

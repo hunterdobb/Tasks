@@ -89,6 +89,10 @@ struct SharedItemsView: View {
             fetchSharedItems()
             fetchChatMessages()
         }
+		.refreshable {
+			fetchSharedItems()
+			fetchChatMessages()
+		}
         .alert(item: $cloudError) { error in
             Alert(
                 title: Text("There was an error"),
