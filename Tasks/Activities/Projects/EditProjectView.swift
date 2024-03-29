@@ -254,12 +254,13 @@ struct EditProjectView: View {
 			let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
 			operation.savePolicy = .allKeys
 
-			operation.modifyRecordsCompletionBlock = { _, _, error in
-				if let error = error {
-                    cloudError = error.getCloudKitError()
+			operation.modifyRecordsResultBlock = { result in
+				switch result {
+				case .success:
+					updateCloudStatus()
+				case .failure(let error):
+					cloudError = error.getCloudKitError()
 				}
-
-				updateCloudStatus()
 			}
 
 			cloudStatus = .checking
@@ -286,15 +287,16 @@ struct EditProjectView: View {
 
 		let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [id])
 
-		operation.modifyRecordsCompletionBlock = { _, _, error in
-            if let error = error {
-                cloudError = error.getCloudKitError()
-            } else {
-                if deleteLocal {
-                    dataController.delete(project)
-                    presentationMode.wrappedValue.dismiss()
-                }
-            }
+		operation.modifyRecordsResultBlock = { result in
+			switch result {
+			case .success:
+				if deleteLocal {
+					dataController.delete(project)
+					presentationMode.wrappedValue.dismiss()
+				}
+			case .failure(let error):
+				cloudError = error.getCloudKitError()
+			}
 
 			updateCloudStatus()
 		}

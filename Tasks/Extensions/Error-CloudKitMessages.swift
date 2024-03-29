@@ -12,7 +12,7 @@ extension Error {
     // CloudError is a type of String that we created that is Identifiable
     func getCloudKitError() -> CloudError {
         guard let error = self as? CKError else {
-            return "An unkown error occurred: \(self.localizedDescription)"
+            return "An unknown error occurred: \(self.localizedDescription)"
         }
 
         switch error.code {

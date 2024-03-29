@@ -79,6 +79,6 @@ struct ComplexTasksWidget: Widget {
 struct ComplexTasksWidget_Previews: PreviewProvider {
 	static var previews: some View {
 		TasksWidgetMultipleEntryView(entry: SimpleEntry(date: Date(), items: [Item.example]))
-			.previewContext(WidgetPreviewContext(family: .systemSmall))
+			.previewContext(WidgetPreviewContext(family: .systemMedium))
 	}
 }

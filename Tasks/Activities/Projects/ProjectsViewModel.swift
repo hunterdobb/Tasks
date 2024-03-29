@@ -18,6 +18,7 @@ extension ProjectsView {
 
 		private let projectsController: NSFetchedResultsController<Project>
 		@Published var projects = [Project]()
+        @Published var selectedItem: Item?
 
 		@Published var showingUnlockView = false
 
@@ -72,6 +73,11 @@ extension ProjectsView {
 
 			dataController.save()
 		}
+
+        func delete(_ item: Item) {
+            dataController.delete(item)
+            dataController.save()
+        }
 
 		func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 			if let newProjects = controller.fetchedObjects as? [Project] {

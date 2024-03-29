@@ -13,6 +13,7 @@ struct SharedProjectsView: View {
 
 	@State private var projects = [SharedProject]()
 	@State private var loadState = LoadState.inactive
+	@State private var cloudError: CloudError?
 
 	var body: some View {
 		NavigationView {
@@ -54,19 +55,24 @@ struct SharedProjectsView: View {
 		operation.desiredKeys = ["title", "detail", "owner", "closed"]
 		operation.resultsLimit = 50
 
-		operation.recordFetchedBlock = { record in
-			let id = record.recordID.recordName
-			let title = record["title"] as? String ?? "No title"
-			let detail = record["detail"] as? String ?? ""
-			let owner = record["owner"] as? String ?? "No owner"
-			let closed = record["closed"] as? Bool ?? false
+		operation.recordMatchedBlock = { recordID, result in
+			switch result {
+			case .success(let record):
+				let id = record.recordID.recordName
+				let title = record["title"] as? String ?? "No title"
+				let detail = record["detail"] as? String ?? ""
+				let owner = record["owner"] as? String ?? "No owner"
+				let closed = record["closed"] as? Bool ?? false
 
-			let sharedProject = SharedProject(id: id, title: title, detail: detail, owner: owner, closed: closed)
-			projects.append(sharedProject)
-			loadState = .success
+				let sharedProject = SharedProject(id: id, title: title, detail: detail, owner: owner, closed: closed)
+				projects.append(sharedProject)
+				loadState = .success
+			case .failure(let error):
+				cloudError = error.getCloudKitError()
+			}
 		}
 
-		operation.queryCompletionBlock = {_, _ in
+		operation.queryResultBlock = { _ in
 			if projects.isEmpty {
 				loadState = .noResults
 			}

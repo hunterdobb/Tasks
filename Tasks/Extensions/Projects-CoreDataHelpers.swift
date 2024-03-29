@@ -128,11 +128,23 @@ extension Project {
 		let id = CKRecord.ID(recordName: name)
 		let operation = CKFetchRecordsOperation(recordIDs: [id])
 		operation.desiredKeys = ["recordID"]
+		var foundCount = 0
 
-		operation.fetchRecordsCompletionBlock = { records, _ in
-			if let records = records {
-				completion(records.count == 1)
-			} else {
+		operation.perRecordResultBlock = { recordID, result in
+			switch result {
+			case .success(_):
+				foundCount += 1
+			case .failure(_):
+				break
+			}
+		}
+
+		operation.fetchRecordsResultBlock = { result in
+			switch result {
+			case .success:
+				completion(foundCount == 1)
+			case .failure(let error):
+				print(error.localizedDescription)
 				completion(false)
 			}
 		}

@@ -8,6 +8,7 @@
 import SwiftUI
 
 typealias ImageButtonStyle = BorderlessButtonStyle
+typealias MacOnlySpacer = EmptyView
 
 extension Notification.Name {
     static let willResignActive = UIApplication.willResignActiveNotification
@@ -24,6 +25,16 @@ struct StackNavigationView<Content: View>: View {
 
 extension Section where Parent: View, Content: View, Footer: View {
     func disableCollapsing() -> some View {
+        self
+    }
+}
+
+extension View {
+    func onDeleteCommand(perform action: (() -> Void)?) -> some View {
+        self
+    }
+
+    func macOnlyPadding() -> some View {
         self
     }
 }

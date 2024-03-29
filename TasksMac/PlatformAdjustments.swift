@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-typealias InsetGroupedListStyle = SidebarListStyle
+typealias InsetGroupedListStyle = DefaultListStyle
 typealias ImageButtonStyle = BorderlessButtonStyle
+typealias MacOnlySpacer = Spacer
 
 extension Notification.Name {
     static let willResignActive = NSApplication.willResignActiveNotification
@@ -25,5 +26,11 @@ struct StackNavigationView<Content: View>: View {
 extension Section where Parent: View, Content: View, Footer: View {
     func disableCollapsing() -> some View {
         self.collapsible(false)
+    }
+}
+
+extension View {
+    func macOnlyPadding() -> some View {
+        self.padding()
     }
 }

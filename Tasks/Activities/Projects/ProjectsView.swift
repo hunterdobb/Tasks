@@ -14,17 +14,23 @@ struct ProjectsView: View {
 	@StateObject var viewModel: ViewModel
 
     var projectsList: some View {
-        List {
+        List(selection: $viewModel.selectedItem) {
             // 'projects.wrappedValue' gives the items from the fetch request, not the fetch request struct around it
 			ForEach(viewModel.projects) { project in
                 Section(header: ProjectHeaderView(project: project)) {
 					ForEach(project.projectItems(using: viewModel.sortOrder)) { item in
                         ItemRowView(project: project, item: item)
+                            .contextMenu {
+                                Button("Delete", role: .destructive) {
+                                    viewModel.delete(item)
+                                }
+                            }
+                            .tag(item)
                     }
                     .onDelete { offsets in
 						viewModel.delete(offsets, from: project)
                     }
-                    
+
 					if viewModel.showClosedProjects == false {
                         Button {
 							withAnimation {
@@ -33,12 +39,17 @@ struct ProjectsView: View {
                         } label: {
                             Label("Add New Item", systemImage: "plus")
                         }
+                        .buttonStyle(.borderless)
                     }
                 }
                 .disableCollapsing()
             }
         }
         .listStyle(InsetGroupedListStyle())
+        .onDeleteCommand {
+            guard let selectedItem = viewModel.selectedItem else { return }
+            viewModel.delete(selectedItem)
+        }
     }
 
     var addProjectToolbarItem: some ToolbarContent {

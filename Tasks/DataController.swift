@@ -24,7 +24,6 @@ class DataController: ObservableObject {
 		get {
 			defaults.bool(forKey: "fullVersionUnlocked")
 		}
-
 		set {
 			defaults.set(newValue, forKey: "fullVersionUnlocked")
 		}

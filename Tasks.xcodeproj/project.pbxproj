@@ -29,6 +29,7 @@
 		B53C485E258978150073F062 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B53C4860258978150073F062 /* Localizable.stringsdict */; };
 		B53C4864258979CA0073F062 /* Awards.json in Resources */ = {isa = PBXBuildFile; fileRef = B53C4866258979CA0073F062 /* Awards.json */; };
 		B545A94225B64ACF000C3308 /* TasksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545A94125B64ACF000C3308 /* TasksTests.swift */; };
+		B54807AE28C7CC1000E50F18 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54807AD28C7CC1000E50F18 /* HomeView.swift */; };
 		B54DD31326489DA9009204E2 /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DD31226489DA9009204E2 /* UnlockManager.swift */; };
 		B55363F4258A833600792DE6 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F3258A833600792DE6 /* ItemListView.swift */; };
 		B55363F8258A845300792DE6 /* ProjectSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F7258A845300792DE6 /* ProjectSummaryView.swift */; };
@@ -72,7 +73,6 @@
 		B583B62527CAFFC700A49FF7 /* DataController-StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DFB30265B062600718CDA /* DataController-StoreKit.swift */; };
 		B583B62627CAFFDA00A49FF7 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F3258A833600792DE6 /* ItemListView.swift */; };
 		B583B62727CAFFDA00A49FF7 /* ProjectSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55363F7258A845300792DE6 /* ProjectSummaryView.swift */; };
-		B583B62827CAFFDA00A49FF7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A9EA72561D38000D30F27 /* HomeView.swift */; };
 		B583B62927CAFFDA00A49FF7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5235EEC263F3CB200627985 /* HomeViewModel.swift */; };
 		B583B62A27CAFFE400A49FF7 /* EditProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A502FC2569E58900600DCB /* EditProjectView.swift */; };
 		B583B62B27CAFFE400A49FF7 /* EditItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535ACC725635046006D9583 /* EditItemView.swift */; };
@@ -203,6 +203,7 @@
 		B545A93F25B64ACF000C3308 /* TasksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TasksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B545A94125B64ACF000C3308 /* TasksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTests.swift; sourceTree = "<group>"; };
 		B545A94325B64ACF000C3308 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B54807AD28C7CC1000E50F18 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B54DD31226489DA9009204E2 /* UnlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockManager.swift; sourceTree = "<group>"; };
 		B54DD3142648A007009204E2 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		B55363F3258A833600792DE6 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
@@ -527,6 +528,7 @@
 				B583B61827CAFD4D00A49FF7 /* Preview Content */,
 				B583B64E27CB015400A49FF7 /* PlatformAdjustments.swift */,
 				B583B65227CBC17F00A49FF7 /* Color-Additions.swift */,
+				B54807AD28C7CC1000E50F18 /* HomeView.swift */,
 			);
 			path = TasksMac;
 			sourceTree = "<group>";
@@ -756,7 +758,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		B5321DC327CAC32E00A8FF35 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -767,7 +769,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
@@ -884,6 +886,7 @@
 				B583B62E27CAFFE400A49FF7 /* SelectSomethingView.swift in Sources */,
 				B583B64627CB00BA00A49FF7 /* SharedProjectsView.swift in Sources */,
 				B583B63327CAFFFE00A49FF7 /* AwardsView.swift in Sources */,
+				B54807AE28C7CC1000E50F18 /* HomeView.swift in Sources */,
 				B583B62627CAFFDA00A49FF7 /* ItemListView.swift in Sources */,
 				B583B64A27CB00CA00A49FF7 /* UnlockView.swift in Sources */,
 				B583B62C27CAFFE400A49FF7 /* ProjectsViewModel.swift in Sources */,
@@ -898,7 +901,6 @@
 				B583B62D27CAFFE400A49FF7 /* ItemDetailRowView.swift in Sources */,
 				B583B63427CAFFFE00A49FF7 /* Award.swift in Sources */,
 				B583B64827CB00BA00A49FF7 /* SharedProject.swift in Sources */,
-				B583B62827CAFFDA00A49FF7 /* HomeView.swift in Sources */,
 				B583B62227CAFFC700A49FF7 /* DataController-Awards.swift in Sources */,
 				B583B63F27CB00AB00A49FF7 /* SKProduct-LocalizedPrice.swift in Sources */,
 				B583B64227CB00BA00A49FF7 /* SignInView.swift in Sources */,
@@ -970,7 +972,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -990,7 +992,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1011,7 +1013,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1032,7 +1034,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1221,7 +1223,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1244,7 +1246,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5M7L7W2WHX;
 				INFOPLIST_FILE = TasksWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
